@@ -50,13 +50,8 @@ const BlogForm = ({ onNewBlog, onUpdated, initialData }) => {
         // Crear blog nuevo
         res = await api.post("/blogs", form);
         onNewBlog?.(res.data);
-        setForm({
-          title: "",
-          summary: "",
-          content: "",
-          imageUrl: "",
-          category: "",
-        });
+        // limpiar form
+        setForm({ title: "", summary: "", content: "", imageUrl: "", category: "" });
       }
     } catch (error) {
       console.error("Error al guardar el blog:", error);

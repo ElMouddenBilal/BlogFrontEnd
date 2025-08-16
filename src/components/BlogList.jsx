@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import api from "../lib/api";
 
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/blogs")
+    api
+      .get("/blogs")
       .then((res) => setBlogs(res.data))
       .catch((err) => console.error("Error cargando blogs:", err));
   }, []);
 
   return (
-    <section
-      id="blog-section"
-      className="px-4 sm:px-6 lg:px-8 py-20"
-    >
+    <section id="blog-section" className="px-4 sm:px-6 lg:px-8 py-20">
       {/* Encabezado */}
       <div className="max-w-7xl mx-auto mb-14 text-center">
         <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">

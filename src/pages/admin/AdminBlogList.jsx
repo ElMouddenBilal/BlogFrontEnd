@@ -6,7 +6,7 @@ const AdminBlogList = () => {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    api.get("/blogs") // <-- sin localhost
+    api.get("/blogs")
       .then((res) => setBlogs(res.data))
       .catch((err) => console.error("Error al obtener blogs:", err));
   }, []);
@@ -14,7 +14,7 @@ const AdminBlogList = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("¿Seguro que deseas eliminar este blog?")) return;
     try {
-      await api.delete(`/blogs/${id}`); // <-- sin localhost
+      await api.delete(`/blogs/${id}`);
       setBlogs((prev) => prev.filter((b) => b._id !== id));
     } catch (err) {
       console.error("Error al eliminar blog:", err);

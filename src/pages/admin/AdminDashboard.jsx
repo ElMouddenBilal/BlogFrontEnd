@@ -14,7 +14,7 @@ const AdminDashboard = () => {
 
   const fetchBlogs = async () => {
     try {
-      const res = await api.get("/blogs"); // <-- sin localhost
+      const res = await api.get("/blogs");
       setBlogs(res.data);
     } catch (err) {
       console.error("Error al obtener blogs:", err);
@@ -29,7 +29,7 @@ const AdminDashboard = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("¿Eliminar este blog?")) return;
     try {
-      await api.delete(`/blogs/${id}`); // <-- sin localhost
+      await api.delete(`/blogs/${id}`);
       setBlogs((prev) => prev.filter((blog) => blog._id !== id));
     } catch (err) {
       console.error("Error al eliminar blog:", err);
