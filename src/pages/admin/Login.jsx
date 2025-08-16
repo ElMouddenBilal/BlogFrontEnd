@@ -47,7 +47,7 @@ export default function Login() {
         <div className="relative rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl">
           <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-[#344CB7]/40 via-[#577BC1]/30 to-transparent -z-10" />
           <div className="p-8">
-            {/* Encabezado */}
+            {/* Encabezadoss */}
             <div className="mb-8 text-center">
               <div className="mx-auto mb-3 h-12 w-12 rounded-xl grid place-items-center bg-gradient-to-br from-[#344CB7] to-[#577BC1] shadow-lg">
                 <svg viewBox="0 0 24 24" className="h-6 w-6 text-white">
