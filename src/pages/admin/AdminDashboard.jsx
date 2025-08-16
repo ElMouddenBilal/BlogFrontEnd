@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../../lib/api";
 import BlogForm from "../../components/BlogForm";
-import api from "../../lib/api"; // ⬅️ usamos tu cliente axios
 
 const AdminDashboard = () => {
   const [blogs, setBlogs] = useState([]);
@@ -14,16 +14,11 @@ const AdminDashboard = () => {
 
   const fetchBlogs = async () => {
     try {
-      const { data } = await api.get("/blogs");
-      setBlogs(data);
+      const res = await api.get("/blogs"); // <-- sin localhost
+      setBlogs(res.data);
     } catch (err) {
       console.error("Error al obtener blogs:", err);
     }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/admin/login", { replace: true });
   };
 
   const handleBlogCreated = (newBlog) => {
@@ -34,44 +29,34 @@ const AdminDashboard = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("¿Eliminar este blog?")) return;
     try {
-      await api.delete(`/blogs/${id}`);
-      setBlogs((prev) => prev.filter((b) => b._id !== id));
+      await api.delete(`/blogs/${id}`); // <-- sin localhost
+      setBlogs((prev) => prev.filter((blog) => blog._id !== id));
     } catch (err) {
       console.error("Error al eliminar blog:", err);
-      alert("No tienes permisos o se produjo un error.");
     }
   };
 
-  const handleEdit = (id) => navigate(`/admin/editar/${id}`);
+  const handleEdit = (id) => {
+    navigate(`/admin/editar/${id}`);
+  };
 
   return (
     <div className="min-h-screen bg-[#000957] py-16 px-4 sm:px-6 lg:px-8 text-white">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center mb-10">
+        <div className="flex justify-between items-center mb-10">
           <h1 className="text-4xl font-extrabold tracking-tight text-[#FFEB00]">
             Panel de Administración
           </h1>
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handleLogout}
-              className="bg-red-500/90 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition"
-              title="Cerrar sesión"
-            >
-              ⎋ Cerrar sesión
-            </button>
-            <button
-              onClick={() => setShowForm(true)}
-              className="bg-[#344CB7] hover:bg-[#577BC1] text-white px-5 py-3 rounded-lg font-semibold shadow-lg transition"
-            >
-              ➕ Crear nuevo blog
-            </button>
-          </div>
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-[#344CB7] hover:bg-[#577BC1] text-white px-5 py-3 rounded-lg font-semibold shadow-lg transition"
+          >
+            ➕ Crear nuevo blog
+          </button>
         </div>
 
-        {/* Modal Form */}
         {showForm && (
-          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
             <div className="bg-white text-black rounded-2xl shadow-2xl p-8 w-full max-w-xl relative">
               <button
                 onClick={() => setShowForm(false)}
@@ -82,13 +67,11 @@ const AdminDashboard = () => {
               <h2 className="text-2xl font-bold text-[#000957] mb-6 border-b pb-3">
                 Nuevo Blog
               </h2>
-              {/* BlogForm ya usará api para POST (ver cambio abajo) */}
               <BlogForm onNewBlog={handleBlogCreated} />
             </div>
           </div>
         )}
 
-        {/* Tabla */}
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
           <table className="w-full table-auto text-sm text-gray-800">
             <thead className="bg-[#E9E9E9] text-[#000957] uppercase text-xs font-bold tracking-wide">
@@ -127,6 +110,7 @@ const AdminDashboard = () => {
                   </td>
                 </tr>
               ))}
+
               {blogs.length === 0 && (
                 <tr>
                   <td colSpan="3" className="text-center py-8 text-gray-500">
