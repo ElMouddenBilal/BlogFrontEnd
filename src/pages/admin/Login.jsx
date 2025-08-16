@@ -1,9 +1,7 @@
 // frontend/src/pages/admin/Login.jsx
 import { useState } from "react";
-import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+import api from "../../lib/api"; // ⬅️ usa el cliente con VITE_API_URL
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -20,7 +18,8 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      const { data } = await axios.post(`${API}/auth/login`, { username, password });
+      // irá a https://blogbackend-qbm2.onrender.com/api/auth/login en prod
+      const { data } = await api.post("/auth/login", { username, password });
       localStorage.setItem("token", data.token);
       navigate(from, { replace: true });
     } catch (err) {
@@ -32,7 +31,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center px-4">
-      {/* Decoración de fondo (no interfiere con tu AppBackground) */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full blur-3xl opacity-30"
              style={{background: "radial-gradient(#344CB7, transparent 60%)"}} />
@@ -41,13 +39,9 @@ export default function Login() {
       </div>
 
       <div className="w-full max-w-md">
-        {/* Tarjeta glass */}
         <div className="relative rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl">
-          {/* Borde/halo superior */}
           <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-[#344CB7]/40 via-[#577BC1]/30 to-transparent -z-10" />
-          
           <div className="p-8">
-            {/* Logo/Título */}
             <div className="mb-8 text-center">
               <div className="mx-auto mb-3 h-12 w-12 rounded-xl grid place-items-center bg-gradient-to-br from-[#344CB7] to-[#577BC1] shadow-lg">
                 <svg viewBox="0 0 24 24" className="h-6 w-6 text-white">
@@ -59,7 +53,6 @@ export default function Login() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Usuario */}
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-white/80">Usuario</label>
                 <div className="relative">
@@ -78,7 +71,6 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Contraseña */}
               <div>
                 <label className="mb-1.5 block text-xs font-medium text-white/80">Contraseña</label>
                 <div className="relative">
@@ -106,14 +98,12 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Error */}
               {error && (
                 <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm text-red-200">
                   {error}
                 </div>
               )}
 
-              {/* Acciones */}
               <div className="flex items-center justify-between text-sm">
                 <label className="inline-flex items-center gap-2 select-none">
                   <input type="checkbox" className="h-4 w-4 rounded border-white/30 bg-transparent text-[#FFEB00] focus:ring-[#FFEB00]/30" />
@@ -122,7 +112,6 @@ export default function Login() {
                 <span className="text-white/60">Demo: <code className="text-white/90">admin / admin123</code></span>
               </div>
 
-              {/* Botón */}
               <button
                 type="submit"
                 disabled={loading}
@@ -143,7 +132,6 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Pie con copy/sugerencia */}
         <p className="mt-4 text-center text-xs text-white/60">
           Acceso restringido. Si no tienes permisos, contacta con el administrador.
         </p>
