@@ -40,6 +40,12 @@ const AdminDashboard = () => {
     navigate(`/admin/editar/${id}`);
   };
 
+  // ⬇️ NUEVO: cerrar sesión
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/admin/login", { replace: true });
+  };
+
   return (
     <div className="min-h-screen bg-[#000957] py-16 px-4 sm:px-6 lg:px-8 text-white">
       <div className="max-w-6xl mx-auto">
@@ -47,12 +53,24 @@ const AdminDashboard = () => {
           <h1 className="text-4xl font-extrabold tracking-tight text-[#FFEB00]">
             Panel de Administración
           </h1>
-          <button
-            onClick={() => setShowForm(true)}
-            className="bg-[#344CB7] hover:bg-[#577BC1] text-white px-5 py-3 rounded-lg font-semibold shadow-lg transition"
-          >
-            ➕ Crear nuevo blog
-          </button>
+
+          <div className="flex items-center gap-3">
+            {/* ⬇️ Botón cerrar sesión */}
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-lg font-semibold shadow-lg transition"
+              title="Cerrar sesión"
+            >
+              Cerrar sesión
+            </button>
+
+            <button
+              onClick={() => setShowForm(true)}
+              className="bg-[#344CB7] hover:bg-[#577BC1] text-white px-5 py-3 rounded-lg font-semibold shadow-lg transition"
+            >
+              ➕ Crear nuevo blog
+            </button>
+          </div>
         </div>
 
         {showForm && (

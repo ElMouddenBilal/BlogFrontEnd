@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import api from "../../lib/api"; // usa el cliente con VITE_API_URL
+import api from "../../lib/api";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -8,16 +8,22 @@ export default function Login() {
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/admin";
+
+  // Si ya hay token, entrar directo al dashboard
+  useEffect(() => {
+    const t = localStorage.getItem("token");
+    if (t) navigate("/admin", { replace: true });
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
-      // En producción irá a: https://TU-BACKEND.onrender.com/api/auth/login
       const { data } = await api.post("/auth/login", { username, password });
       localStorage.setItem("token", data.token);
       navigate(from, { replace: true });
@@ -30,7 +36,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center px-4">
-      {/* Decoración de fondo */}
+      {/* Fondo decorativo */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
           className="absolute -top-20 -left-20 h-72 w-72 rounded-full blur-3xl opacity-30"
@@ -47,7 +53,7 @@ export default function Login() {
         <div className="relative rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl">
           <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-[#344CB7]/40 via-[#577BC1]/30 to-transparent -z-10" />
           <div className="p-8">
-            {/* Encabezadoss */}
+            {/* Encabezado */}
             <div className="mb-8 text-center">
               <div className="mx-auto mb-3 h-12 w-12 rounded-xl grid place-items-center bg-gradient-to-br from-[#344CB7] to-[#577BC1] shadow-lg">
                 <svg viewBox="0 0 24 24" className="h-6 w-6 text-white">
@@ -79,7 +85,7 @@ export default function Login() {
                     className="w-full rounded-xl border border-white/20 bg-white/10 px-10 py-3 text-white placeholder-white/50 outline-none focus:border-[#FFEB00]/60 focus:ring-2 focus:ring-[#FFEB00]/20 transition"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    placeholder="admin"
+                    placeholder="Usuario"
                     autoComplete="username"
                   />
                 </div>
@@ -101,7 +107,7 @@ export default function Login() {
                     className="w-full rounded-xl border border-white/20 bg-white/10 px-10 py-3 text-white placeholder-white/50 outline-none focus:border-[#FFEB00]/60 focus:ring-2 focus:ring-[#FFEB00]/20 transition"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="admin123"
+                    placeholder="Contraseña"
                     autoComplete="current-password"
                   />
                   <button
@@ -131,9 +137,6 @@ export default function Login() {
                   />
                   <span className="text-white/80">Recordarme</span>
                 </label>
-                <span className="text-white/60">
-                  Demo: <code className="text-white/90">admin / admin123</code>
-                </span>
               </div>
 
               {/* Botón */}
