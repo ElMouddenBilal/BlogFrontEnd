@@ -22,8 +22,8 @@ const Hero = () => {
         </h2>
 
         {/* Subtítulo */}
-        <p className="text-lg sm:text-xl md:text-2xl font-light leading-relaxed text-white/90 mb-10 max-w-3xl mx-auto">
-          Artículos seleccionados para inspirarte, educarte y llevarte al siguiente nivel digital. <br />
+        <p className="text-lg sm:text-xl md:text-1xl font-light leading-relaxed text-white/90 mb-10 max-w-3xl mx-auto">
+          Artículos seleccionados para inspirarte, educarte y llevarte al siguiente nivel digital.
           Desde avances en inteligencia artificial hasta ideas que transforman el mundo.
         </p>
 
